@@ -1,0 +1,12 @@
+/target
+/dist
+
+# OS cruft
+.DS_Store
+
+# editors
+.vscode/
+.idea/
+
+# Claude Code local settings (machine-specific)
+.claude/settings.local.json
