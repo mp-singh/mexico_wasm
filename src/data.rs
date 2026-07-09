@@ -66,36 +66,30 @@ pub struct Choice {
     pub note: &'static str,
 }
 
-pub const JOINS: [Choice; 5] = [
+pub const JOINS: [Choice; 4] = [
     Choice {
         id: "puebla",
         emoji: "🌮",
         name: "hangs in puebla",
-        note: "i come to you. walking shoes, dad jokes, and a frankly irresponsible amount of enthusiasm.",
+        note: "i come to you. you've been telling me about your world since quebec — i'd like to see it at walking pace.",
     },
     Choice {
         id: "cdmx",
         emoji: "🏙️",
         name: "a mexico city day",
-        note: "museums, tacos al pastor, me mispronouncing chapultepec with total confidence.",
-    },
-    Choice {
-        id: "mty",
-        emoji: "🏔️",
-        name: "the monterrey leg",
-        note: "mountains that show off. i respect that in a landscape.",
+        note: "nine million people, and i'd still only be watching one pedestrian cross the street.",
     },
     Choice {
         id: "sancris",
         emoji: "🌄",
         name: "the san cristóbal leg",
-        note: "48 hours of cobblestones and coffee in chiapas. very cinematic, remember.",
+        note: "the closing leg. the sunsets are supposedly unreal. i wasn't planning on watching them alone.",
     },
     Choice {
         id: "elsewhere",
         emoji: "🗺️",
         name: "somewhere else entirely",
-        note: "you name the place, i handle logistics. i'm excellent at logistics. this website is exhibit A.",
+        note: "you pick. the last time i followed you somewhere random i ended up with a nickname and mild kidney trauma. i'd do it again.",
     },
 ];
 
@@ -110,25 +104,25 @@ pub const VIBES: [Choice; 6] = [
         id: "walk",
         emoji: "🚶",
         name: "a long walk",
-        note: "the classics are classics for a reason.",
+        note: "you have a documented history of kidney violence. i'll risk it.",
     },
     Choice {
         id: "dance",
         emoji: "💃",
         name: "salsa & bachata",
-        note: "i lead, you laugh at the state of my footwork.",
+        note: "i lead. you laugh. the system works.",
     },
     Choice {
-        id: "pool",
-        emoji: "🎱",
-        name: "billiards",
-        note: "i'll go easy on you. that's still a lie.",
+        id: "guide",
+        emoji: "🧭",
+        name: "i'll be the guide",
+        note: "your country, your picks — show me what google doesn't know about. i'll gasp on cue.",
     },
     Choice {
         id: "churros",
         emoji: "🍫",
         name: "churros & café",
-        note: "dessert as a personality trait. golden, like someone's favourite color.",
+        note: "golden. someone's favourite color. i notice things.",
     },
     Choice {
         id: "surprise",

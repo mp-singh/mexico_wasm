@@ -49,11 +49,71 @@ pub fn DayStrip(days: &'static [u32], avail: RwSignal<BTreeMap<u32, Avail>>) -> 
     view! { <div class="dstrip">{cells}</div> }
 }
 
+/// The saved override if one exists, else the OS preference.
+fn initial_dark() -> bool {
+    let win = web_sys::window().expect("no window? concerning");
+    if let Ok(Some(store)) = win.local_storage() {
+        if let Ok(Some(saved)) = store.get_item("theme") {
+            return saved == "dark";
+        }
+    }
+    win.match_media("(prefers-color-scheme: dark)")
+        .ok()
+        .flatten()
+        .map(|m| m.matches())
+        .unwrap_or(false)
+}
+
+fn apply_theme(dark: bool) {
+    let win = web_sys::window().expect("no window? concerning");
+    let theme = if dark { "dark" } else { "light" };
+    if let Some(root) = win.document().and_then(|d| d.document_element()) {
+        let _ = root.set_attribute("data-theme", theme);
+    }
+    if let Ok(Some(store)) = win.local_storage() {
+        let _ = store.set_item("theme", theme);
+    }
+}
+
+/// Sun/moon switch, fixed in the corner. Follows the OS theme until the first
+/// click; after that the choice sticks (localStorage). The CSS `data-theme`
+/// blocks do the actual re-painting.
+#[component]
+pub fn ThemeToggle() -> impl IntoView {
+    let dark = RwSignal::new(initial_dark());
+
+    // A returning visitor with a saved choice gets it re-stamped on load;
+    // everyone else keeps following the OS until they click.
+    let win = web_sys::window().expect("no window? concerning");
+    if let Ok(Some(store)) = win.local_storage() {
+        if let Ok(Some(_)) = store.get_item("theme") {
+            apply_theme(dark.get_untracked());
+        }
+    }
+
+    view! {
+        <button
+            class="theme-btn"
+            title="lights"
+            aria-label="toggle dark mode"
+            on:click=move |_| {
+                let next = !dark.get_untracked();
+                dark.set(next);
+                apply_theme(next);
+            }
+        >
+            {move || if dark.get() { "☀️" } else { "🌙" }}
+        </button>
+    }
+}
+
 /// Falling sparkles and dots. Generated once with the xorshift RNG; CSS does
 /// the animation, so after mount this costs the CPU nothing.
 #[component]
 pub fn Confetti() -> impl IntoView {
-    const HUES: [&str; 4] = ["#D23369", "#2E9E9B", "#F4A9C4", "#C9A24B"];
+    // Talavera mid-tones — inline styles can't follow the CSS theme, so these
+    // are picked to read on both the glaze-white and cobalt-night grounds.
+    const HUES: [&str; 4] = ["#3A6CC4", "#6FAE8B", "#9BB8E3", "#D9A62E"];
     let mut rng = Rng::from_clock();
 
     let bits = (0..36)

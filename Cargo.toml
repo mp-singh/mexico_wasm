@@ -8,7 +8,15 @@ description = "thirteen days, three cities, one question: when are you free?"
 leptos = { version = "0.7", features = ["csr"] }
 console_error_panic_hook = "0.1"
 js-sys = "0.3"
-web-sys = { version = "0.3", features = ["Window", "Navigator", "Clipboard"] }
+web-sys = { version = "0.3", features = [
+    "Window",
+    "Navigator",
+    "Clipboard",
+    "Document",
+    "Element",
+    "Storage",
+    "MediaQueryList",
+] }
 
 [profile.release]
 opt-level = "z"   # optimize for size — it's an itinerary, not a database
