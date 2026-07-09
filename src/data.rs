@@ -116,7 +116,8 @@ pub const VIBES: [Choice; 6] = [
         id: "guide",
         emoji: "🧭",
         name: "i'll be the guide",
-        note: "your country, your picks — show me what google doesn't know about. i'll gasp on cue.",
+        note:
+            "your country, your picks — show me what google doesn't know about. i'll gasp on cue.",
     },
     Choice {
         id: "churros",

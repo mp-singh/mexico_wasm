@@ -102,11 +102,35 @@ mod tests {
     #[test]
     fn zeller_knows_the_trip() {
         // Known anchor:
-        assert_eq!(Date { y: 2000, m: 1, d: 1 }.day_of_week(), 6); // Saturday
-        // Landing day:
-        assert_eq!(Date { y: 2026, m: 9, d: 18 }.day_of_week(), 5); // Friday
-        // Her birthday, mid-trip. A Saturday. The universe is cooperating.
-        assert_eq!(Date { y: 2026, m: 9, d: 26 }.day_of_week(), 6);
+        assert_eq!(
+            Date {
+                y: 2000,
+                m: 1,
+                d: 1
+            }
+            .day_of_week(),
+            6
+        ); // Saturday
+           // Landing day:
+        assert_eq!(
+            Date {
+                y: 2026,
+                m: 9,
+                d: 18
+            }
+            .day_of_week(),
+            5
+        ); // Friday
+           // Her birthday, mid-trip. A Saturday. The universe is cooperating.
+        assert_eq!(
+            Date {
+                y: 2026,
+                m: 9,
+                d: 26
+            }
+            .day_of_week(),
+            6
+        );
     }
 
     #[test]

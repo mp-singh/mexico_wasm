@@ -15,7 +15,12 @@ pub fn DayStrip(days: &'static [u32], avail: RwSignal<BTreeMap<u32, Avail>>) -> 
     let cells = days
         .iter()
         .map(|&d| {
-            let dw = WEEKDAYS_SHORT[Date { y: TRIP_YEAR, m: TRIP_MONTH, d }.day_of_week() as usize];
+            let dw = WEEKDAYS_SHORT[Date {
+                y: TRIP_YEAR,
+                m: TRIP_MONTH,
+                d,
+            }
+            .day_of_week() as usize];
             let bday = d == HER_BIRTHDAY;
             view! {
                 <button
