@@ -5,6 +5,6 @@
     "directory": "./dist"
   },
   "routes": [
-    { "pattern": "test1.princesingh.dev", "custom_domain": true }
+    { "pattern": "pedestrian.princesingh.dev", "custom_domain": true }
   ]
 }
