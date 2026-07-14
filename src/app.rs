@@ -212,7 +212,8 @@ pub fn App() -> impl IntoView {
             </Show>
         </div>
 
-        <Show when=move || step.get() == Step::Done && !not_free.get()>
+        // Confetti either way — saying no gets celebrated too.
+        <Show when=move || step.get() == Step::Done>
             <Confetti />
         </Show>
 
