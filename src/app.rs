@@ -223,8 +223,8 @@ pub fn App() -> impl IntoView {
                 <p class="eyebrow">"Ola · pas grand-chose"</p>
                 <h1>"i'm coming to your timezone 🇲🇽"</h1>
                 <p class="sub">
-                    "september 18 – 30. three cities, thirteen-ish days, and only one question: "
-                    <em>"when are you free? tu es libre quand? in broken french and even more broken spanish"</em>
+                    "september 18 – 30. three cities, thirteen-ish days, and only one question (in broken french and even more broken spanish): "
+                    <em>"when are you free? tu es libre quand?"</em>
                 </p>
                 <div class="next-row">
                     <button class="btn" on:click=move |_| step.set(Step::Route)>"show me the plan →"</button>
@@ -255,7 +255,7 @@ pub fn App() -> impl IntoView {
                         </div>
                     }).collect_view()}
                 </div>
-                <p class="sub fine">"attention: dates can drift ±1 day with flight"</p>
+                <p class="sub fine">"🚨 attention: dates are able to move ±1 day"</p>
                 <div class="next-row">
                     {back_button(Step::Intro)}
                     <button class="btn" on:click=move |_| step.set(Step::Days)>"okay, your turn →"</button>
@@ -270,7 +270,7 @@ pub fn App() -> impl IntoView {
                 <h1>"when are you free?"</h1>
                 <p class="sub">
                     "tap una vez for " <strong>"free"</strong> ", deux fois for " <strong>"maybe"</strong>
-                    ", three times to erase the evidence. c'est n'est pas grave."
+                    ", three times to erase the evidence. ce n'est pas grave."
                 </p>
                 {LEGS.iter().filter(|l| !l.days.is_empty()).map(|l| view! {
                     <div class="day-group">
@@ -286,7 +286,7 @@ pub fn App() -> impl IntoView {
                     <span class="lg"><span class="sw maybe"></span>"maybe"</span>
                 </div>
                 <Show when=move || bday().is_some()>
-                    <p class="sub birthday-note">"🎂 sept 26 is your birthday. noted. filed. mais, je ne te crois pas ton anniversaire isn't on the 25th...or the 27th. "</p>
+                    <p class="sub birthday-note">"🎂 sept 26 is your birthday. noted. filed. mais, je ne te crois pas ton anniversaire isn't on the 25th...or the 27th. hehe "</p>
                 </Show>
                 <div class="shy-row">
                     <button

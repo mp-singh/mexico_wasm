@@ -37,7 +37,7 @@ pub const LEGS: [Leg; 4] = [
         name: "mexico city & puebla",
         dates: "sept 21 – 28",
         days: &[21, 22, 23, 24, 25, 26, 27],
-        note: "the main event. cdmx sits at 2,240m...free altitude training. i might also might get to meet a tres beau pedestrian.",
+        note: "the main event. cdmx sits at 2,240m...free altitude training. i might also get to meet a très beau pedestrian.",
         tag: Some("📍 your stop"),
     },
     Leg {
@@ -122,7 +122,7 @@ pub const VIBES: [Choice; 6] = [
         id: "churros",
         emoji: "🍫",
         name: "churros & café",
-        note: "i like churros. i like coffee. let's do this.",
+        note: "i like churros. i like coffee. both golden. la couleur préférée de quelqu'un, non?",
     },
     Choice {
         id: "guide",
