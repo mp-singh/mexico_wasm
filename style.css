@@ -203,7 +203,20 @@ h1 { font-family: 'Fraunces', serif; font-weight: 650; color: var(--azul-text); 
 /* ——— day strips ——— */
 .day-group { margin-top: 20px; text-align: left; }
 .day-group .dg-name { font-size: 11.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--verde); margin-bottom: 8px; }
-.dstrip { display: flex; flex-wrap: wrap; gap: 6px; }
+.dstrip { display: flex; flex-wrap: wrap; gap: 6px; position: relative; }
+/* the excuse: hovering (or, on phones, tapping) a spoken-for day reveals why */
+.dstrip[data-busy]:has(.day.busy:hover)::after {
+  content: attr(data-busy);
+  position: absolute; bottom: calc(100% + 8px); left: 0;
+  width: max-content; max-width: min(320px, 100%);
+  background: var(--ink); color: var(--paper);
+  font-size: 12.5px; line-height: 1.45; text-align: left;
+  padding: 8px 12px; border-radius: 12px;
+  box-shadow: 0 8px 24px -8px #0e142266;
+  pointer-events: none; z-index: 6;
+  animation: tip-in .16s ease both;
+}
+@keyframes tip-in { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
 .day {
   position: relative; width: 54px; padding: 8px 0 7px;
   border-radius: 12px; border: 1.5px solid var(--cielo); background: var(--card2);
@@ -218,6 +231,10 @@ h1 { font-family: 'Fraunces', serif; font-weight: 650; color: var(--azul-text); 
 .day.maybe { background: var(--gold-soft); border-color: var(--gold); }
 .day.birthday { box-shadow: 0 0 0 2px var(--gold) inset; }
 .day .cake { position: absolute; top: -9px; right: -6px; font-size: 12px; line-height: 1; }
+.day.busy { opacity: .45; cursor: not-allowed; }
+.day.busy:hover { transform: none; border-color: var(--cielo); }
+.day.busy .dn { text-decoration: line-through; }
+.dg-busy { opacity: .6; letter-spacing: .04em; }
 
 .legend { display: flex; gap: 18px; justify-content: center; margin-top: 16px; font-size: 12.5px; opacity: .8; }
 .legend .lg { display: flex; align-items: center; gap: 6px; }
@@ -238,9 +255,9 @@ h1 { font-family: 'Fraunces', serif; font-weight: 650; color: var(--azul-text); 
 .next-row { margin-top: 28px; display: flex; justify-content: center; align-items: center; gap: 12px; }
 .back-btn { padding: 14px 22px; }
 
-.shy-row { margin-top: 16px; min-height: 52px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.shy-row { margin-top: 16px; min-height: 44px; display: flex; flex-direction: column; align-items: center; }
 .shy-btn { transition: transform .18s ease; padding: 10px 20px; font-size: 13.5px; }
-.shy { font-size: 13px; opacity: .75; font-style: italic; min-height: 18px; }
+.shy { font-size: 13px; opacity: .75; font-style: italic; min-height: 18px; margin-top: 12px; }
 
 .summary { text-align: left; margin: 26px auto 0; max-width: 380px; display: flex; flex-direction: column; gap: 16px; }
 .summary .row { display: flex; gap: 12px; align-items: baseline; }
@@ -254,4 +271,5 @@ h1 { font-family: 'Fraunces', serif; font-weight: 650; color: var(--azul-text); 
   .big-emoji, .confetti .bit { animation: none !important; }
   .card { animation: none; }
   .btn, .tile, .day { transition: none; }
+  .dstrip::after { animation: none; }
 }

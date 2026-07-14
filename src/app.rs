@@ -5,7 +5,7 @@ use std::collections::BTreeMap;
 use leptos::prelude::*;
 
 use crate::components::{Confetti, DayStrip, ThemeToggle};
-use crate::data::{Choice, HER_BIRTHDAY, JOINS, LEGS, VIBES};
+use crate::data::{Choice, BUSY_DAYS, HER_BIRTHDAY, JOINS, LEGS, VIBES};
 use crate::util::{compress_days, Avail, Rng};
 
 /// The flow, made illegal-state-proof by the type system.
@@ -34,19 +34,54 @@ pub fn App() -> impl IntoView {
     let copied_snapshot: RwSignal<Option<String>> = RwSignal::new(None);
 
     // The shy escape hatch. "none of these days work" dodges the first three
-    // clicks, then holds still and leads to the graceful not-free ending.
-    // Once tamed it stays tamed — the button remembers.
+    // approaches — hover or click — then holds still and leads to the graceful
+    // not-free ending. Once tamed it stays tamed — the button remembers.
     let not_free = RwSignal::new(false);
     let shy_pos = RwSignal::new((0.0f64, 0.0f64));
     let dodges = RwSignal::new(0u32);
+    // Debounce: pointermove fires in bursts, and a move-dodge followed by a
+    // click lands within milliseconds — one approach should cost one dodge.
+    let last_dodge = RwSignal::new(0.0f64);
+    let dodge = move || {
+        let now = js_sys::Date::now();
+        if now - last_dodge.get_untracked() < 250.0 {
+            return;
+        }
+        last_dodge.set(now);
+        let n = dodges.get_untracked() + 1;
+        dodges.set(n);
+        if n >= 3 {
+            // The surrender: walk back to center and hold still there.
+            shy_pos.set((0.0, 0.0));
+        } else {
+            let mut rng = Rng::from_clock();
+            // Always hop to the other side of the row, so it can't land back
+            // under the cursor and eat a second dodge for free.
+            let (prev_x, _) = shy_pos.get_untracked();
+            let x = if prev_x >= 0.0 {
+                rng.range(-70.0, -25.0)
+            } else {
+                rng.range(25.0, 70.0)
+            };
+            shy_pos.set((x, rng.range(-26.0, 26.0)));
+        }
+    };
     let shy_click = move |_: web_sys::MouseEvent| {
         if dodges.get_untracked() < 3 {
-            let mut rng = Rng::from_clock();
-            shy_pos.set((rng.range(-70.0, 70.0), rng.range(-26.0, 26.0)));
-            dodges.update(|n| *n += 1);
+            dodge();
         } else {
             not_free.set(true);
             step.set(Step::Done);
+        }
+    };
+    // pointermove, not pointerenter: a screen change can re-render the button
+    // underneath a parked cursor (the previous screen's next button sits
+    // nearby), and enter fires without the mouse moving — only a mouse that's
+    // actually approaching should scare it. Mouse pointers only, so taps keep
+    // the full three-tap chase on phones.
+    let shy_hover = move |ev: web_sys::PointerEvent| {
+        if ev.pointer_type() == "mouse" && dodges.get_untracked() < 3 {
+            dodge();
         }
     };
 
@@ -185,12 +220,11 @@ pub fn App() -> impl IntoView {
         <Show when=move || step.get() == Step::Intro>
             <div class="card">
                 <span class="big-emoji" role="img" aria-label="airplane">"✈️"</span>
-                <p class="eyebrow">"no es nada · pas grand-chose"</p>
+                <p class="eyebrow">"Ola · pas grand-chose"</p>
                 <h1>"i'm coming to your timezone 🇲🇽"</h1>
                 <p class="sub">
-                    "september 18 – 30. three cities, thirteen days, and exactly one question: "
-                    <em>"when are you free? t'es libre quand?"</em>
-                    " no other agenda. this site was compiled with zero agendas. promis."
+                    "september 18 – 30. three cities, thirteen-ish days, and only one question: "
+                    <em>"when are you free? tu es libre quand? in broken french and even more broken spanish"</em>
                 </p>
                 <div class="next-row">
                     <button class="btn" on:click=move |_| step.set(Step::Route)>"show me the plan →"</button>
@@ -201,10 +235,10 @@ pub fn App() -> impl IntoView {
         // ——— step 1 · the route (a briefing, not a menu) ———
         <Show when=move || step.get() == Step::Route>
             <div class="card">
-                <p class="eyebrow">"el plan · le plan"</p>
+                <p class="eyebrow">"le plan · el plan "</p>
                 <h1>"where i'll be"</h1>
                 <p class="sub">
-                    "nothing to tap here — just the briefing: " <code>"&plan"</code> ", no " <code>"mut"</code> "."
+                    "nothing to tap here. just mon rough travel plan of where i want to consume all of the tacos."
                 </p>
                 <div class="itin">
                     {LEGS.iter().map(|l| view! {
@@ -221,7 +255,7 @@ pub fn App() -> impl IntoView {
                         </div>
                     }).collect_view()}
                 </div>
-                <p class="sub fine">"dates can drift ±1 day with flight prices; the cities won't budge."</p>
+                <p class="sub fine">"attention: dates can drift ±1 day with flight"</p>
                 <div class="next-row">
                     {back_button(Step::Intro)}
                     <button class="btn" on:click=move |_| step.set(Step::Days)>"okay, your turn →"</button>
@@ -235,12 +269,15 @@ pub fn App() -> impl IntoView {
                 <p class="eyebrow">"the actual point of all this"</p>
                 <h1>"when are you free?"</h1>
                 <p class="sub">
-                    "tap once for " <strong>"free"</strong> ", twice for " <strong>"maybe"</strong>
-                    ", three times to erase the evidence. it's a form, not a contract. tranquila."
+                    "tap una vez for " <strong>"free"</strong> ", deux fois for " <strong>"maybe"</strong>
+                    ", three times to erase the evidence. c'est n'est pas grave."
                 </p>
                 {LEGS.iter().filter(|l| !l.days.is_empty()).map(|l| view! {
                     <div class="day-group">
-                        <div class="dg-name">{l.emoji} " " {l.name}</div>
+                        <div class="dg-name">
+                            {l.emoji} " " {l.name}
+                            {(l.days == BUSY_DAYS).then(|| view! { <span class="dg-busy">" · spoken for"</span> })}
+                        </div>
                         <DayStrip days=l.days avail=avail />
                     </div>
                 }).collect_view()}
@@ -249,8 +286,21 @@ pub fn App() -> impl IntoView {
                     <span class="lg"><span class="sw maybe"></span>"maybe"</span>
                 </div>
                 <Show when=move || bday().is_some()>
-                    <p class="sub birthday-note">"🎂 sept 26 is your birthday. noted. filed. i am absolutely not already planning something. rien. nada."</p>
+                    <p class="sub birthday-note">"🎂 sept 26 is your birthday. noted. filed. mais, je ne te crois pas ton anniversaire isn't on the 25th...or the 27th. "</p>
                 </Show>
+                <div class="shy-row">
+                    <button
+                        class="btn ghost shy-btn"
+                        style:transform=move || {
+                            let (x, y) = shy_pos.get();
+                            format!("translate({x:.0}px, {y:.0}px)")
+                        }
+                        on:click=shy_click
+                        on:pointermove=shy_hover
+                    >
+                        {move || if dodges.get() >= 3 { "…fine. i'll hold still" } else { "none of these days work 🙈" }}
+                    </button>
+                </div>
                 <div class="next-row">
                     {back_button(Step::Route)}
                     <button
@@ -264,31 +314,19 @@ pub fn App() -> impl IntoView {
                         "next →"
                     </button>
                 </div>
-                <div class="shy-row">
-                    <button
-                        class="btn ghost shy-btn"
-                        style:transform=move || {
-                            let (x, y) = shy_pos.get();
-                            format!("translate({x:.0}px, {y:.0}px)")
+                <p class="shy">
+                    {move || {
+                        const LINES: [&str; 3] = [
+                            "hm. that button seems shy. 🙈",
+                            "it does cardio with me. bonne chance.",
+                            "one more and it gives up. promis.",
+                        ];
+                        match dodges.get() {
+                            0 => "",
+                            n => LINES[((n - 1).min(2)) as usize],
                         }
-                        on:click=shy_click
-                    >
-                        {move || if dodges.get() >= 3 { "…fine. i'll hold still" } else { "none of these days work 🙈" }}
-                    </button>
-                    <p class="shy">
-                        {move || {
-                            const LINES: [&str; 3] = [
-                                "hm. that button seems shy. 🙈",
-                                "it does cardio with me. bonne chance.",
-                                "one more and it gives up. promis.",
-                            ];
-                            match dodges.get() {
-                                0 => "",
-                                n => LINES[((n - 1).min(2)) as usize],
-                            }
-                        }}
-                    </p>
-                </div>
+                    }}
+                </p>
             </div>
         </Show>
 
@@ -297,7 +335,7 @@ pub fn App() -> impl IntoView {
             <div class="card">
                 <p class="eyebrow">"optional · si tu veux"</p>
                 <h1>"want to tag along anywhere?"</h1>
-                <p class="sub">"multi-select, zero pressure. this is the rsvp equivalent of a maybe."</p>
+                <p class="sub">"multi-select, pas de stress. no pressure. this is the rsvp equivalent of a maybe."</p>
                 <div class="tiles stack">
                     {JOINS.iter().map(|c| tile(c, joins)).collect_view()}
                 </div>
@@ -352,7 +390,7 @@ pub fn App() -> impl IntoView {
                         if not_free.get() {
                             "september's busy. it happens. the form accepts this with grace. la prochaine fois. 🌵"
                         } else {
-                            "zero merge conflicts. okay, maybe one — but it's resolvable over tacos."
+                            "schrödinger's calendar: your days were both free and busy until you tapped. now le plan officially exists. j'adore physics."
                         }
                     }}
                 </p>
@@ -416,9 +454,10 @@ pub fn App() -> impl IntoView {
                         "p.s. no hard feelings. the button tried its best."
                     </Show>
                     <Show when=move || !not_free.get()>
-                        "p.s. yes, rust again. normal people share a google calendar."<br/>
-                        "engineers ship to production."
+                        "p.s. normal people share a google calendar."<br/>
+                        "but i'm a weirdo, so i made a form instead. and it worked!"
                     </Show>
+                    <br/>"made with love in my favorite programming language rust, a little wasm and a lot of google translate."
                 </p>
             </div>
         </Show>

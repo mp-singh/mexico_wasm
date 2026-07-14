@@ -29,7 +29,7 @@ pub const LEGS: [Leg; 4] = [
         name: "monterrey",
         dates: "sept 18 – 21",
         days: &[18, 19, 20],
-        note: "first stop. big mountains, bigger tacos, and me stretching like it's a competitive sport.",
+        note: "first stop. big mountains, and my first introduction to authentic mexican food. yummm.",
         tag: None,
     },
     Leg {
@@ -37,7 +37,7 @@ pub const LEGS: [Leg; 4] = [
         name: "mexico city & puebla",
         dates: "sept 21 – 28",
         days: &[21, 22, 23, 24, 25, 26, 27],
-        note: "the main event. word on the street is puebla has this one really cool pedestrian.",
+        note: "the main event. cdmx sits at 2,240m...free altitude training. word on the street is puebla has this one really cool pedestrian.",
         tag: Some("📍 your stop"),
     },
     Leg {
@@ -45,7 +45,7 @@ pub const LEGS: [Leg; 4] = [
         name: "san cristóbal, chiapas",
         dates: "sept 28 – 30",
         days: &[28, 29, 30],
-        note: "cobblestones, coffee, morning mist. very cinematic. currently casting a co-star.",
+        note: "cobblestones, morning runs, and apparently some of the best coffee mexico has to offer.",
         tag: None,
     },
     Leg {
@@ -53,10 +53,16 @@ pub const LEGS: [Leg; 4] = [
         name: "back to quebec",
         dates: "sept 30",
         days: &[],
-        note: "retour à la base. re-entering canadian autumn against my will.",
+        note: "retour à la base. canadian autumn is objectively beautiful, against, i will still be complaining.",
         tag: None,
     },
 ];
+
+/// Days already spoken for (the monterrey leg): greyed out on the days
+/// screen, never tappable. `BUSY_NOTE` is the hover excuse.
+pub const BUSY_DAYS: &[u32] = LEGS[0].days;
+pub const BUSY_NOTE: &str =
+    "ohh dang, désolé. i'll actually be busy this day. everything from the 21st is fair game. 🏔️";
 
 #[derive(Clone, Copy, PartialEq)]
 pub struct Choice {
@@ -70,26 +76,26 @@ pub const JOINS: [Choice; 4] = [
     Choice {
         id: "puebla",
         emoji: "🌮",
-        name: "hangs in puebla",
-        note: "i come to you. you've been telling me about your world since quebec — i'd like to see it at walking pace.",
+        name: "getting lost in puebla",
+        note: "i come to you. you've been telling me about your world since quebec. i'd like to see it at walking pace.",
     },
     Choice {
         id: "cdmx",
         emoji: "🏙️",
         name: "a mexico city day",
-        note: "nine million people, and i'd still only be watching one pedestrian cross the street.",
+        note: "nine million people, i'm sure i'm gonna get lost here as well. but i trust you to show me the good stuff.",
     },
     Choice {
         id: "sancris",
         emoji: "🌄",
         name: "the san cristóbal leg",
-        note: "the closing leg. the sunsets are supposedly unreal. i wasn't planning on watching them alone.",
+        note: "the closing leg. the sunsets are supposedly unreal. but i'll need a second opinion.",
     },
     Choice {
         id: "elsewhere",
         emoji: "🗺️",
         name: "somewhere else entirely",
-        note: "you pick. the last time i followed you somewhere random i ended up with a nickname and mild kidney trauma. i'd do it again.",
+        note: "you pick. the last time i followed you somewhere random i ended up with a mild kidney trauma. i haven't learned my lesson.",
     },
 ];
 
@@ -112,23 +118,22 @@ pub const VIBES: [Choice; 6] = [
         name: "salsa & bachata",
         note: "i lead. you laugh. the system works.",
     },
-    Choice {
-        id: "guide",
-        emoji: "🧭",
-        name: "i'll be the guide",
-        note:
-            "your country, your picks — show me what google doesn't know about. i'll gasp on cue.",
-    },
-    Choice {
+     Choice {
         id: "churros",
         emoji: "🍫",
         name: "churros & café",
         note: "golden. someone's favourite color. i notice things.",
     },
     Choice {
+        id: "guide",
+        emoji: "🧭",
+        name: "you're the guide",
+        note: "your country, your picks. show me what google doesn't know about. i'll follow and listen.",
+    },
+    Choice {
         id: "surprise",
         emoji: "🎲",
-        name: "surprise me",
-        note: "bold. i've been drafting hypothetical itineraries since july.",
+        name: "i'll surprise you",
+        note: "bold choice. i've been drafting hypothetical itineraries since july. désolé in advance.",
     },
 ];

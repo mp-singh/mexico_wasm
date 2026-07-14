@@ -4,12 +4,14 @@ use std::collections::BTreeMap;
 
 use leptos::prelude::*;
 
-use crate::data::{HER_BIRTHDAY, TRIP_MONTH, TRIP_YEAR};
+use crate::data::{BUSY_DAYS, BUSY_NOTE, HER_BIRTHDAY, TRIP_MONTH, TRIP_YEAR};
 use crate::util::{Avail, Date, Rng, WEEKDAYS_SHORT};
 
 /// A row of tappable days. Tap cycles unmarked → free → maybe → unmarked, so
 /// nothing she does is ever more than one tap from undone. State is lifted to
-/// the parent's map; the strip owns nothing.
+/// the parent's map; the strip owns nothing. Days in `BUSY_DAYS` render greyed
+/// and ignore taps; hovering the strip's busy cells reveals `BUSY_NOTE`
+/// (a CSS tooltip fed by the `data-busy` attribute).
 #[component]
 pub fn DayStrip(days: &'static [u32], avail: RwSignal<BTreeMap<u32, Avail>>) -> impl IntoView {
     let cells = days
@@ -22,14 +24,20 @@ pub fn DayStrip(days: &'static [u32], avail: RwSignal<BTreeMap<u32, Avail>>) -> 
             }
             .day_of_week() as usize];
             let bday = d == HER_BIRTHDAY;
+            let busy = BUSY_DAYS.contains(&d);
             view! {
                 <button
                     class="day"
                     class:free=move || avail.with(|m| m.get(&d) == Some(&Avail::Free))
                     class:maybe=move || avail.with(|m| m.get(&d) == Some(&Avail::Maybe))
                     class:birthday=bday
+                    class:busy=busy
+                    aria-disabled=busy.then_some("true")
                     title=if bday { Some("your birthday 🎂") } else { None }
                     on:click=move |_| {
+                        if busy {
+                            return;
+                        }
                         avail.update(|m| match m.get(&d).copied() {
                             None => {
                                 m.insert(d, Avail::Free);
@@ -51,7 +59,8 @@ pub fn DayStrip(days: &'static [u32], avail: RwSignal<BTreeMap<u32, Avail>>) -> 
         })
         .collect_view();
 
-    view! { <div class="dstrip">{cells}</div> }
+    let has_busy = days.iter().any(|d| BUSY_DAYS.contains(d));
+    view! { <div class="dstrip" data-busy=has_busy.then_some(BUSY_NOTE)>{cells}</div> }
 }
 
 /// The saved override if one exists, else the OS preference.
