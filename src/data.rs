@@ -37,7 +37,7 @@ pub const LEGS: [Leg; 4] = [
         name: "mexico city & puebla",
         dates: "sept 21 – 28",
         days: &[21, 22, 23, 24, 25, 26, 27],
-        note: "the main event. cdmx sits at 2,240m...free altitude training. word on the street is puebla has this one really cool pedestrian.",
+        note: "the main event. cdmx sits at 2,240m...free altitude training. i might also might get to meet a tres beau pedestrian.",
         tag: Some("📍 your stop"),
     },
     Leg {
@@ -53,7 +53,7 @@ pub const LEGS: [Leg; 4] = [
         name: "back to quebec",
         dates: "sept 30",
         days: &[],
-        note: "retour à la base. canadian autumn is objectively beautiful, against, i will still be complaining.",
+        note: "retour à la base. canadian autumn is objectively beautiful. i will still be complaining.",
         tag: None,
     },
 ];
@@ -77,7 +77,7 @@ pub const JOINS: [Choice; 4] = [
         id: "puebla",
         emoji: "🌮",
         name: "getting lost in puebla",
-        note: "i come to you. you've been telling me about your world since quebec. i'd like to see it at walking pace.",
+        note: "i come to you. you've been telling me about your world since quebec. i'd like to see it at \"walking pace.\"",
     },
     Choice {
         id: "cdmx",
@@ -122,18 +122,18 @@ pub const VIBES: [Choice; 6] = [
         id: "churros",
         emoji: "🍫",
         name: "churros & café",
-        note: "golden. someone's favourite color. i notice things.",
+        note: "i like churros. i like coffee. let's do this.",
     },
     Choice {
         id: "guide",
         emoji: "🧭",
         name: "you're the guide",
-        note: "your country, your picks. show me what google doesn't know about. i'll follow and listen.",
+        note: "you know best. show me what google doesn't know about. i'll follow and listen.",
     },
     Choice {
         id: "surprise",
         emoji: "🎲",
         name: "i'll surprise you",
-        note: "bold choice. i've been drafting hypothetical itineraries since july. désolé in advance.",
+        note: "bold choice. i've been drafting hypothetical itineraries since july. désolé in advance. hehe.",
     },
 ];
