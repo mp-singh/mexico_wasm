@@ -232,7 +232,7 @@ pub fn App() -> impl IntoView {
                 <p class="eyebrow">"ola 🌊· pas grand-chose"</p>
                 <h1>"i'm coming to your timezone 🇲🇽"</h1>
                 <p class="sub">
-                    "september 18 to 30. three cities, thirteen-ish days, and only one question ( spanish version under construction 🚧 ): "
+                    "september 18 to 30. three cities, thirteen-ish days, and only one question (spanish version under construction 🚧): "
                     <em>"when are you free? tu es libre quand?"</em>
                 </p>
                 <div class="next-row">

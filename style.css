@@ -122,6 +122,11 @@ body {
 .theme-btn:focus-visible { outline: 3px solid var(--verde); outline-offset: 2px; }
 
 .progress { display: flex; align-items: center; gap: 6px; margin-bottom: 34px; min-height: 34px; }
+/* phones: the fixed theme toggle owns the top-right corner and the strip
+   would slide under it — drop the breadcrumbs below its lane */
+@media (max-width: 430px) {
+  .progress { margin-top: 38px; }
+}
 .progress .line { width: 28px; height: 2.5px; background: var(--cielo); border-radius: 2px; transition: background .4s; }
 .progress .line.on { background: var(--gold); }
 .progress .ht { font-size: 22px; filter: grayscale(1) opacity(.35); transition: filter .4s, transform .4s; }
