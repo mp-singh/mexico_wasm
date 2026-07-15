@@ -23,6 +23,7 @@
   --gold-deep: #B0851F;   /* eyebrow text */
   --gold-soft: #F3E3B0;   /* maybe days */
   --on-gold: #FFFFFF;     /* text on gold pills */
+  --malva: #7B5D78;       /* dusty plum: the sad-option button */
   --sel-tint: #DCE6F555;  /* selected tile wash */
   --glow1: #DCE6F580;     /* body gradient tints */
   --glow2: #D9EDE099;
@@ -43,6 +44,7 @@
     --gold-deep: #D9B45C;
     --gold-soft: #4A3D1E;
     --on-gold: #2A2410;
+    --malva: #8A6B85;
     --sel-tint: #3A6CC42E;
     --glow1: #24345F59;
     --glow2: #1E3A3052;
@@ -66,6 +68,7 @@
   --gold-deep: #B0851F;
   --gold-soft: #F3E3B0;
   --on-gold: #FFFFFF;
+  --malva: #7B5D78;
   --sel-tint: #DCE6F555;
   --glow1: #DCE6F580;
   --glow2: #D9EDE099;
@@ -86,6 +89,7 @@
   --gold-deep: #D9B45C;
   --gold-soft: #4A3D1E;
   --on-gold: #2A2410;
+  --malva: #8A6B85;
   --sel-tint: #3A6CC42E;
   --glow1: #24345F59;
   --glow2: #1E3A3052;
@@ -117,10 +121,10 @@ body {
 .theme-btn:hover { transform: translateY(-2px) rotate(15deg); border-color: var(--gold); }
 .theme-btn:focus-visible { outline: 3px solid var(--verde); outline-offset: 2px; }
 
-.progress { display: flex; align-items: center; gap: 6px; margin-bottom: 34px; min-height: 24px; }
-.progress .line { width: 22px; height: 2px; background: var(--cielo); border-radius: 2px; transition: background .4s; }
+.progress { display: flex; align-items: center; gap: 6px; margin-bottom: 34px; min-height: 34px; }
+.progress .line { width: 28px; height: 2.5px; background: var(--cielo); border-radius: 2px; transition: background .4s; }
 .progress .line.on { background: var(--gold); }
-.progress .ht { font-size: 15px; filter: grayscale(1) opacity(.35); transition: filter .4s, transform .4s; }
+.progress .ht { font-size: 22px; filter: grayscale(1) opacity(.35); transition: filter .4s, transform .4s; }
 .progress .ht.on { filter: none; transform: scale(1.15); }
 
 .card {
@@ -256,7 +260,12 @@ h1 { font-family: 'Fraunces', serif; font-weight: 650; color: var(--azul-text); 
 .back-btn { padding: 14px 22px; }
 
 .shy-row { margin-top: 16px; min-height: 44px; display: flex; flex-direction: column; align-items: center; }
-.shy-btn { transition: transform .18s ease; padding: 10px 20px; font-size: 13.5px; }
+.shy-btn {
+  transition: transform .18s ease; padding: 10px 20px; font-size: 13.5px;
+  background: var(--malva); color: #fff;
+  box-shadow: 0 6px 16px -8px #0e142266;
+}
+.shy-btn:hover { background: var(--malva); transform: none; }
 .shy { font-size: 13px; opacity: .75; font-style: italic; min-height: 18px; margin-top: 12px; }
 
 .summary { text-align: left; margin: 26px auto 0; max-width: 380px; display: flex; flex-direction: column; gap: 16px; }
