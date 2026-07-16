@@ -83,7 +83,7 @@ pub const JOINS: [Choice; 4] = [
         id: "cdmx",
         emoji: "🏙️",
         name: "a mexico city day",
-        note: "nine million people, i'm sure i'm gonna get lost here as well. but i trust you to show me the good stuff.",
+        note: "nine million people, i'm sure i'm gonna get lost here. but i trust you to show me the good stuff.",
     },
     Choice {
         id: "sancris",

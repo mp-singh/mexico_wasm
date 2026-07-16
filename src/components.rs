@@ -89,7 +89,8 @@ fn apply_theme(dark: bool) {
     }
 }
 
-/// Sun/moon switch, fixed in the corner. Follows the OS theme until the first
+/// Sun/moon switch, parked in the page's top corner (absolute, so it scrolls
+/// away rather than hovering over content). Follows the OS theme until the first
 /// click; after that the choice sticks (localStorage). The CSS `data-theme`
 /// blocks do the actual re-painting.
 #[component]

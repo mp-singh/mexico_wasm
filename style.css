@@ -111,7 +111,9 @@ body {
 }
 
 .theme-btn {
-  position: fixed; top: 16px; right: 16px; z-index: 10;
+  /* absolute, not fixed: it scrolls with the page, so in-flow content
+     (the breadcrumbs) can never slide underneath it */
+  position: absolute; top: 16px; right: 16px; z-index: 10;
   width: 42px; height: 42px; border-radius: 50%;
   border: 1.5px solid var(--cielo); background: var(--card2);
   font-size: 18px; line-height: 1; cursor: pointer;
